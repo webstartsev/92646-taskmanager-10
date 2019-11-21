@@ -172,7 +172,7 @@ const createTaskTemplate = () => {
   );
 };
 
-const createTaskEditTemplate = () => {
+const createFormTaskEditTemplate = () => {
   return (
     `<article class="card card--edit card--yellow card--repeat">
       <form class="card__form" method="get">
@@ -428,7 +428,7 @@ render(mainElement, createBoardTemplate());
 
 const boardElement = mainElement.querySelector(`.board`);
 const taskListElement = boardElement.querySelector(`.board__tasks`);
-render(taskListElement, createTaskEditTemplate());
+render(taskListElement, createFormTaskEditTemplate());
 
 new Array(TASK_COUNT).fill(``).forEach(() => render(taskListElement, createTaskTemplate()));
 
