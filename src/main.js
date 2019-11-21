@@ -9,9 +9,7 @@ const createMenuTemplate = () => {
         id="control__new-task"
         class="control__input visually-hidden"
       />
-      <label for="control__new-task" class="control__label control__label--new-task"
-        >+ ADD NEW TASK</label
-      >
+      <label for="control__new-task" class="control__label control__label--new-task">+ ADD NEW TASK</label>
       <input
         type="radio"
         name="control"
@@ -26,9 +24,7 @@ const createMenuTemplate = () => {
         id="control__statistic"
         class="control__input visually-hidden"
       />
-      <label for="control__statistic" class="control__label"
-        >STATISTICS</label
-      >
+      <label for="control__statistic" class="control__label">STATISTICS</label>
     </section>`
   );
 };
@@ -43,9 +39,7 @@ const createFilterTemplate = () => {
         name="filter"
         checked
       />
-      <label for="filter__all" class="filter__label">
-        All <span class="filter__all-count">13</span></label
-      >
+      <label for="filter__all" class="filter__label">All <span class="filter__all-count">13</span></label>
       <input
         type="radio"
         id="filter__overdue"
@@ -53,9 +47,7 @@ const createFilterTemplate = () => {
         name="filter"
         disabled
       />
-      <label for="filter__overdue" class="filter__label"
-        >Overdue <span class="filter__overdue-count">0</span></label
-      >
+      <label for="filter__overdue" class="filter__label">Overdue <span class="filter__overdue-count">0</span></label>
       <input
         type="radio"
         id="filter__today"
@@ -63,45 +55,35 @@ const createFilterTemplate = () => {
         name="filter"
         disabled
       />
-      <label for="filter__today" class="filter__label"
-        >Today <span class="filter__today-count">0</span></label
-      >
+      <label for="filter__today" class="filter__label">Today <span class="filter__today-count">0</span></label>
       <input
         type="radio"
         id="filter__favorites"
         class="filter__input visually-hidden"
         name="filter"
       />
-      <label for="filter__favorites" class="filter__label"
-        >Favorites <span class="filter__favorites-count">1</span></label
-      >
+      <label for="filter__favorites" class="filter__label">Favorites <span class="filter__favorites-count">1</span></label>
       <input
         type="radio"
         id="filter__repeating"
         class="filter__input visually-hidden"
         name="filter"
       />
-      <label for="filter__repeating" class="filter__label"
-        >Repeating <span class="filter__repeating-count">1</span></label
-      >
+      <label for="filter__repeating" class="filter__label">Repeating <span class="filter__repeating-count">1</span></label>
       <input
         type="radio"
         id="filter__tags"
         class="filter__input visually-hidden"
         name="filter"
       />
-      <label for="filter__tags" class="filter__label"
-        >Tags <span class="filter__tags-count">1</span></label
-      >
+      <label for="filter__tags" class="filter__label">Tags <span class="filter__tags-count">1</span></label>
       <input
         type="radio"
         id="filter__archive"
         class="filter__input visually-hidden"
         name="filter"
       />
-      <label for="filter__archive" class="filter__label"
-        >Archive <span class="filter__archive-count">115</span></label
-      >
+      <label for="filter__archive" class="filter__label">Archive <span class="filter__archive-count">115</span></label>
     </section>`
   );
 };
@@ -206,8 +188,7 @@ const createTaskEditTemplate = () => {
               <textarea
                 class="card__text"
                 placeholder="Start typing your text here..."
-                name="text"
-              >Here is a card with filled data</textarea>
+                name="text">Here is a card with filled data</textarea>
             </label>
           </div>
 
@@ -243,9 +224,7 @@ const createTaskEditTemplate = () => {
                       name="repeat"
                       value="mo"
                     />
-                    <label class="card__repeat-day" for="repeat-mo-4"
-                      >mo</label
-                    >
+                    <label class="card__repeat-day" for="repeat-mo-4">mo</label>
                     <input
                       class="visually-hidden card__repeat-day-input"
                       type="checkbox"
@@ -254,9 +233,7 @@ const createTaskEditTemplate = () => {
                       value="tu"
                       checked
                     />
-                    <label class="card__repeat-day" for="repeat-tu-4"
-                      >tu</label
-                    >
+                    <label class="card__repeat-day" for="repeat-tu-4">tu</label>
                     <input
                       class="visually-hidden card__repeat-day-input"
                       type="checkbox"
@@ -264,9 +241,7 @@ const createTaskEditTemplate = () => {
                       name="repeat"
                       value="we"
                     />
-                    <label class="card__repeat-day" for="repeat-we-4"
-                      >we</label
-                    >
+                    <label class="card__repeat-day" for="repeat-we-4">we</label>
                     <input
                       class="visually-hidden card__repeat-day-input"
                       type="checkbox"
@@ -274,9 +249,7 @@ const createTaskEditTemplate = () => {
                       name="repeat"
                       value="th"
                     />
-                    <label class="card__repeat-day" for="repeat-th-4"
-                      >th</label
-                    >
+                    <label class="card__repeat-day" for="repeat-th-4">th</label>
                     <input
                       class="visually-hidden card__repeat-day-input"
                       type="checkbox"
@@ -285,9 +258,7 @@ const createTaskEditTemplate = () => {
                       value="fr"
                       checked
                     />
-                    <label class="card__repeat-day" for="repeat-fr-4"
-                      >fr</label
-                    >
+                    <label class="card__repeat-day" for="repeat-fr-4">fr</label>
                     <input
                       class="visually-hidden card__repeat-day-input"
                       type="checkbox"
@@ -295,9 +266,7 @@ const createTaskEditTemplate = () => {
                       value="sa"
                       id="repeat-sa-4"
                     />
-                    <label class="card__repeat-day" for="repeat-sa-4"
-                      >sa</label
-                    >
+                    <label class="card__repeat-day" for="repeat-sa-4">sa</label>
                     <input
                       class="visually-hidden card__repeat-day-input"
                       type="checkbox"
@@ -306,9 +275,7 @@ const createTaskEditTemplate = () => {
                       value="su"
                       checked
                     />
-                    <label class="card__repeat-day" for="repeat-su-4"
-                      >su</label
-                    >
+                    <label class="card__repeat-day" for="repeat-su-4">su</label>
                   </div>
                 </fieldset>
               </div>
@@ -384,9 +351,7 @@ const createTaskEditTemplate = () => {
                 />
                 <label
                   for="color-black-4"
-                  class="card__color card__color--black"
-                  >black</label
-                >
+                  class="card__color card__color--black">black</label>
                 <input
                   type="radio"
                   id="color-yellow-4"
@@ -397,9 +362,7 @@ const createTaskEditTemplate = () => {
                 />
                 <label
                   for="color-yellow-4"
-                  class="card__color card__color--yellow"
-                  >yellow</label
-                >
+                  class="card__color card__color--yellow">yellow</label>
                 <input
                   type="radio"
                   id="color-blue-4"
@@ -409,9 +372,7 @@ const createTaskEditTemplate = () => {
                 />
                 <label
                   for="color-blue-4"
-                  class="card__color card__color--blue"
-                  >blue</label
-                >
+                  class="card__color card__color--blue">blue</label>
                 <input
                   type="radio"
                   id="color-green-4"
@@ -421,9 +382,7 @@ const createTaskEditTemplate = () => {
                 />
                 <label
                   for="color-green-4"
-                  class="card__color card__color--green"
-                  >green</label
-                >
+                  class="card__color card__color--green">green</label>
                 <input
                   type="radio"
                   id="color-pink-4"
@@ -433,9 +392,7 @@ const createTaskEditTemplate = () => {
                 />
                 <label
                   for="color-pink-4"
-                  class="card__color card__color--pink"
-                  >pink</label
-                >
+                  class="card__color card__color--pink">pink</label>
               </div>
             </div>
           </div>
