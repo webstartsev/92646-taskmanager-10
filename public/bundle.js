@@ -86,45 +86,43 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/main.js":
-/*!*********************!*\
-  !*** ./src/main.js ***!
-  \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./src/components/board.js":
+/*!*********************************!*\
+  !*** ./src/components/board.js ***!
+  \*********************************/
+/*! exports provided: createBoardTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-const createMenuTemplate = () => {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createBoardTemplate", function() { return createBoardTemplate; });
+const createBoardTemplate = () => {
   return (
-    `<section class="control__btn-wrap">
-      <input
-        type="radio"
-        name="control"
-        id="control__new-task"
-        class="control__input visually-hidden"
-      />
-      <label for="control__new-task" class="control__label control__label--new-task">+ ADD NEW TASK</label>
-      <input
-        type="radio"
-        name="control"
-        id="control__task"
-        class="control__input visually-hidden"
-        checked
-      />
-      <label for="control__task" class="control__label">TASKS</label>
-      <input
-        type="radio"
-        name="control"
-        id="control__statistic"
-        class="control__input visually-hidden"
-      />
-      <label for="control__statistic" class="control__label">STATISTICS</label>
-    </section>`
+    `<section class="board container">
+      <div class="board__filter-list">
+        <a href="#" class="board__filter">SORT BY DEFAULT</a>
+        <a href="#" class="board__filter">SORT BY DATE up</a>
+        <a href="#" class="board__filter">SORT BY DATE down</a>
+      </div>
+
+      <div class="board__tasks"></div>
+    </div>`
   );
 };
 
+
+/***/ }),
+
+/***/ "./src/components/filter.js":
+/*!**********************************!*\
+  !*** ./src/components/filter.js ***!
+  \**********************************/
+/*! exports provided: createFilterTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFilterTemplate", function() { return createFilterTemplate; });
 const createFilterTemplate = () => {
   return (
     `<section class="main__filter filter container">
@@ -184,90 +182,19 @@ const createFilterTemplate = () => {
   );
 };
 
-const createBoardTemplate = () => {
-  return (
-    `<section class="board container">
-      <div class="board__filter-list">
-        <a href="#" class="board__filter">SORT BY DEFAULT</a>
-        <a href="#" class="board__filter">SORT BY DATE up</a>
-        <a href="#" class="board__filter">SORT BY DATE down</a>
-      </div>
 
-      <div class="board__tasks"></div>
-    </div>`
-  );
-};
+/***/ }),
 
-const createTaskTemplate = () => {
-  return (
-    `<article class="card card--black">
-      <div class="card__form">
-        <div class="card__inner">
-          <div class="card__control">
-            <button type="button" class="card__btn card__btn--edit">
-              edit
-            </button>
-            <button type="button" class="card__btn card__btn--archive">
-              archive
-            </button>
-            <button
-              type="button"
-              class="card__btn card__btn--favorites card__btn--disabled"
-            >
-              favorites
-            </button>
-          </div>
+/***/ "./src/components/form-task.js":
+/*!*************************************!*\
+  !*** ./src/components/form-task.js ***!
+  \*************************************/
+/*! exports provided: createFormTaskEditTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-          <div class="card__color-bar">
-            <svg class="card__color-bar-wave" width="100%" height="10">
-              <use xlink:href="#wave"></use>
-            </svg>
-          </div>
-
-          <div class="card__textarea-wrap">
-            <p class="card__text">Example default task with default color.</p>
-          </div>
-
-          <div class="card__settings">
-            <div class="card__details">
-              <div class="card__dates">
-                <div class="card__date-deadline">
-                  <p class="card__input-deadline-wrap">
-                    <span class="card__date">23 September</span>
-                    <span class="card__time">11:15 PM</span>
-                  </p>
-                </div>
-              </div>
-
-              <div class="card__hashtag">
-                <div class="card__hashtag-list">
-                  <span class="card__hashtag-inner">
-                    <span class="card__hashtag-name">
-                      #todo
-                    </span>
-                  </span>
-
-                  <span class="card__hashtag-inner">
-                    <span class="card__hashtag-name">
-                      #personal
-                    </span>
-                  </span>
-
-                  <span class="card__hashtag-inner">
-                    <span class="card__hashtag-name">
-                      #important
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>`
-  );
-};
-
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFormTaskEditTemplate", function() { return createFormTaskEditTemplate; });
 const createFormTaskEditTemplate = () => {
   return (
     `<article class="card card--edit card--yellow card--repeat">
@@ -503,11 +430,174 @@ const createFormTaskEditTemplate = () => {
   );
 };
 
-const createLoadBoreBtnTemplate = () => {
+
+/***/ }),
+
+/***/ "./src/components/load-more-btn.js":
+/*!*****************************************!*\
+  !*** ./src/components/load-more-btn.js ***!
+  \*****************************************/
+/*! exports provided: createLoadMoreBtnTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createLoadMoreBtnTemplate", function() { return createLoadMoreBtnTemplate; });
+const createLoadMoreBtnTemplate = () => {
   return (
     `<button class="load-more" type="button">load more</button>`
   );
 };
+
+
+/***/ }),
+
+/***/ "./src/components/menu.js":
+/*!********************************!*\
+  !*** ./src/components/menu.js ***!
+  \********************************/
+/*! exports provided: createMenuTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMenuTemplate", function() { return createMenuTemplate; });
+const createMenuTemplate = () => {
+  return (
+    `<section class="control__btn-wrap">
+      <input
+        type="radio"
+        name="control"
+        id="control__new-task"
+        class="control__input visually-hidden"
+      />
+      <label for="control__new-task" class="control__label control__label--new-task">+ ADD NEW TASK</label>
+      <input
+        type="radio"
+        name="control"
+        id="control__task"
+        class="control__input visually-hidden"
+        checked
+      />
+      <label for="control__task" class="control__label">TASKS</label>
+      <input
+        type="radio"
+        name="control"
+        id="control__statistic"
+        class="control__input visually-hidden"
+      />
+      <label for="control__statistic" class="control__label">STATISTICS</label>
+    </section>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/components/task.js":
+/*!********************************!*\
+  !*** ./src/components/task.js ***!
+  \********************************/
+/*! exports provided: createTaskTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTaskTemplate", function() { return createTaskTemplate; });
+const createTaskTemplate = () => {
+  return (
+    `<article class="card card--black">
+      <div class="card__form">
+        <div class="card__inner">
+          <div class="card__control">
+            <button type="button" class="card__btn card__btn--edit">
+              edit
+            </button>
+            <button type="button" class="card__btn card__btn--archive">
+              archive
+            </button>
+            <button
+              type="button"
+              class="card__btn card__btn--favorites card__btn--disabled"
+            >
+              favorites
+            </button>
+          </div>
+
+          <div class="card__color-bar">
+            <svg class="card__color-bar-wave" width="100%" height="10">
+              <use xlink:href="#wave"></use>
+            </svg>
+          </div>
+
+          <div class="card__textarea-wrap">
+            <p class="card__text">Example default task with default color.</p>
+          </div>
+
+          <div class="card__settings">
+            <div class="card__details">
+              <div class="card__dates">
+                <div class="card__date-deadline">
+                  <p class="card__input-deadline-wrap">
+                    <span class="card__date">23 September</span>
+                    <span class="card__time">11:15 PM</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="card__hashtag">
+                <div class="card__hashtag-list">
+                  <span class="card__hashtag-inner">
+                    <span class="card__hashtag-name">
+                      #todo
+                    </span>
+                  </span>
+
+                  <span class="card__hashtag-inner">
+                    <span class="card__hashtag-name">
+                      #personal
+                    </span>
+                  </span>
+
+                  <span class="card__hashtag-inner">
+                    <span class="card__hashtag-name">
+                      #important
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/main.js":
+/*!*********************!*\
+  !*** ./src/main.js ***!
+  \*********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_menu__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/menu */ "./src/components/menu.js");
+/* harmony import */ var _components_filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/filter */ "./src/components/filter.js");
+/* harmony import */ var _components_board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/board */ "./src/components/board.js");
+/* harmony import */ var _components_form_task__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/form-task */ "./src/components/form-task.js");
+/* harmony import */ var _components_task__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/task */ "./src/components/task.js");
+/* harmony import */ var _components_load_more_btn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/load-more-btn */ "./src/components/load-more-btn.js");
+
+
+
+
+
+
 
 const TASK_COUNT = 3;
 
@@ -518,17 +608,17 @@ const render = (container, template, position = `beforeend`) => {
 const mainElement = document.querySelector(`.main`);
 const mainControlElement = mainElement.querySelector(`.main__control`);
 
-render(mainControlElement, createMenuTemplate());
-render(mainElement, createFilterTemplate());
-render(mainElement, createBoardTemplate());
+render(mainControlElement, Object(_components_menu__WEBPACK_IMPORTED_MODULE_0__["createMenuTemplate"])());
+render(mainElement, Object(_components_filter__WEBPACK_IMPORTED_MODULE_1__["createFilterTemplate"])());
+render(mainElement, Object(_components_board__WEBPACK_IMPORTED_MODULE_2__["createBoardTemplate"])());
 
 const boardElement = mainElement.querySelector(`.board`);
 const taskListElement = boardElement.querySelector(`.board__tasks`);
-render(taskListElement, createFormTaskEditTemplate());
+render(taskListElement, Object(_components_form_task__WEBPACK_IMPORTED_MODULE_3__["createFormTaskEditTemplate"])());
 
-new Array(TASK_COUNT).fill(``).forEach(() => render(taskListElement, createTaskTemplate()));
+new Array(TASK_COUNT).fill(``).forEach(() => render(taskListElement, Object(_components_task__WEBPACK_IMPORTED_MODULE_4__["createTaskTemplate"])()));
 
-render(boardElement, createLoadBoreBtnTemplate());
+render(boardElement, Object(_components_load_more_btn__WEBPACK_IMPORTED_MODULE_5__["createLoadMoreBtnTemplate"])());
 
 
 /***/ })
