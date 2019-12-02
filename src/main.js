@@ -7,7 +7,9 @@ import {createLoadMoreBtnTemplate} from './components/load-more-btn';
 import {generateTasks} from './mock/task.js';
 import {generateFilters} from './mock/filter.js';
 
-const TASK_COUNT = 3;
+const TASK_COUNT = 22;
+const SHOWING_TASKS_COUNT_ON_START = 8;
+const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 
 const render = (container, template, position = `beforeend`) => {
   container.insertAdjacentHTML(position, template);
@@ -27,8 +29,21 @@ const taskListElement = boardElement.querySelector(`.board__tasks`);
 
 const tasks = generateTasks(TASK_COUNT);
 render(taskListElement, createFormTaskEditTemplate(tasks[0]));
-for (let index = 1; index < tasks.length; index++) {
-  render(taskListElement, createTaskTemplate(tasks[index]));
-}
+let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
+tasks.slice(1, showingTasksCount)
+  .forEach((task) => render(taskListElement, createTaskTemplate(task)));
 
 render(boardElement, createLoadMoreBtnTemplate());
+
+const loadMoreButton = boardElement.querySelector(`.load-more`);
+loadMoreButton.addEventListener(`click`, () => {
+  const prevTasksCount = showingTasksCount;
+  showingTasksCount = showingTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
+
+  tasks.slice(prevTasksCount, showingTasksCount)
+    .forEach((task) => render(taskListElement, createTaskTemplate(task)));
+
+  if (showingTasksCount >= tasks.length) {
+    loadMoreButton.remove();
+  }
+});
