@@ -16,8 +16,8 @@ const render = (container, template, position = `beforeend`) => {
 };
 
 const mainElement = document.querySelector(`.main`);
-const mainControlElement = mainElement.querySelector(`.main__control`);
 
+const mainControlElement = mainElement.querySelector(`.main__control`);
 render(mainControlElement, createMenuTemplate());
 
 const tasks = generateTasks(TASK_COUNT);
@@ -27,8 +27,8 @@ render(mainElement, createBoardTemplate());
 
 const boardElement = mainElement.querySelector(`.board`);
 const taskListElement = boardElement.querySelector(`.board__tasks`);
-
 render(taskListElement, createFormTaskEditTemplate(tasks[0]));
+
 let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
 tasks.slice(1, showingTasksCount)
   .forEach((task) => render(taskListElement, createTaskTemplate(task)));
