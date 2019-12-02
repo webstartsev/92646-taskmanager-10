@@ -21,12 +21,13 @@ export const createTaskTemplate = (task) => {
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
+  const isRepaet = Object.values(repeatingDays).some(Boolean);
 
   const date = isDateShowing ? `${dueDate.getDate()} ${MonthNames[dueDate.getMonth()]}` : ``;
   const time = isDateShowing ? formatTime(dueDate) : ``;
 
   const hashtags = createHashtagsMarkup(Array.from(tags));
-  const repeatClass = Object.values(repeatingDays).some(Boolean) ? `card--repeat` : ``;
+  const repeatClass = isRepaet ? `card--repeat` : ``;
   const deadlineClass = isExpired ? `card--deadline` : ``;
 
   return (
@@ -57,14 +58,14 @@ export const createTaskTemplate = (task) => {
           </div>
           <div class="card__settings">
             <div class="card__details">
-              <div class="card__dates">
-                <div class="card__date-deadline">
-                  <p class="card__input-deadline-wrap">
-                    <span class="card__date">${date}</span>
-                    <span class="card__time">${time}</span>
-                  </p>
-                </div>
+              ${!isRepaet ? `<div class="card__dates">
+              <div class="card__date-deadline">
+                <p class="card__input-deadline-wrap">
+                  <span class="card__date">${date}</span>
+                  <span class="card__time">${time}</span>
+                </p>
               </div>
+            </div>` : ``}
               <div class="card__hashtag">
                 <div class="card__hashtag-list">
                   ${hashtags}
