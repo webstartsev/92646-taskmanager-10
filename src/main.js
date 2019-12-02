@@ -20,14 +20,14 @@ const mainControlElement = mainElement.querySelector(`.main__control`);
 
 render(mainControlElement, createMenuTemplate());
 
-const filters = generateFilters();
+const tasks = generateTasks(TASK_COUNT);
+const filters = generateFilters(tasks);
 render(mainElement, createFilterTemplate(filters));
 render(mainElement, createBoardTemplate());
 
 const boardElement = mainElement.querySelector(`.board`);
 const taskListElement = boardElement.querySelector(`.board__tasks`);
 
-const tasks = generateTasks(TASK_COUNT);
 render(taskListElement, createFormTaskEditTemplate(tasks[0]));
 let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
 tasks.slice(1, showingTasksCount)
