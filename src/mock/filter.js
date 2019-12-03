@@ -5,19 +5,20 @@ const filterNames = [
 ];
 
 const getFilterCountItems = (title, tasks) => {
+  const filteredDueDateTasks = tasks.filter((task) => task.dueDate instanceof Date);
   switch (title) {
     case `overdue`:
-      return tasks.filter((task) => task.dueDate instanceof Date && task.dueDate < Date.now()).length;
+      return filteredDueDateTasks.filter((task) => task.dueDate < Date.now()).length;
     case `today`:
-      return tasks.filter((task) => task.dueDate instanceof Date && getFullDate(task.dueDate) === getFullDate()).length;
+      return filteredDueDateTasks.filter((task) => getFullDate(task.dueDate) === getFullDate()).length;
     case `favorites`:
-      return tasks.filter((task) => task.dueDate instanceof Date && task.isFavorite).length;
+      return tasks.filter((task) => task.isFavorite).length;
     case `repeating`:
-      return tasks.filter((task) => task.dueDate instanceof Date && Object.values(task.repeatingDays).some(Boolean)).length;
+      return tasks.filter((task) => Object.values(task.repeatingDays).some(Boolean)).length;
     case `tags`:
-      return tasks.filter((task) => task.dueDate instanceof Date && Array.from(task.tags).length).length;
+      return tasks.filter((task) => Array.from(task.tags).length).length;
     case `archive`:
-      return tasks.filter((task) => task.dueDate instanceof Date && task.isArchive).length;
+      return tasks.filter((task) => task.isArchive).length;
     default:
       return tasks.length;
   }
