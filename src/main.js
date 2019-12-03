@@ -24,11 +24,24 @@ render(mainElement, new BoardComponent().getElement());
 
 const boardElement = mainElement.querySelector(`.board`);
 const taskListElement = boardElement.querySelector(`.board__tasks`);
-render(taskListElement, new FormTaskComponent(tasks[0]).getElement());
 
 let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
-tasks.slice(1, showingTasksCount)
-  .forEach((task) => render(taskListElement, new TaskComponent(task).getElement()));
+tasks.slice(0, showingTasksCount).forEach((task) => {
+  const taskComponent = new TaskComponent(task);
+  const taskFormComponent = new FormTaskComponent(task);
+
+  const editBtn = taskComponent.getElement().querySelector(`.card__btn--edit`);
+  editBtn.addEventListener(`click`, () => {
+    taskListElement.replaceChild(taskFormComponent.getElement(), taskComponent.getElement());
+  });
+
+  const editForm = taskFormComponent.getElement().querySelector(`.card__form`);
+  editForm.addEventListener(`submit`, () => {
+    taskListElement.replaceChild(taskComponent.getElement(), taskFormComponent.getElement());
+  });
+
+  render(taskListElement, taskComponent.getElement());
+});
 
 render(boardElement, new LoadMoreBtnComponent().getElement());
 
