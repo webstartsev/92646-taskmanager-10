@@ -4,6 +4,7 @@ import BoardComponent from './components/board';
 import FormTaskComponent from './components/form-task';
 import TaskComponent from './components/task';
 import LoadMoreBtnComponent from './components/load-more-btn';
+import NoTaskComponent from './components/no-tasks.js';
 import {generateTasks} from './mock/task.js';
 import {generateFilters} from './mock/filter.js';
 import {render} from './utils.js';
@@ -53,27 +54,34 @@ render(mainControlElement, new MenuComponent().getElement());
 const tasks = generateTasks(TASK_COUNT);
 const filters = generateFilters(tasks);
 render(mainElement, new FilterComponent(filters).getElement());
-render(mainElement, new BoardComponent().getElement());
 
-const boardElement = mainElement.querySelector(`.board`);
-const taskListElement = boardElement.querySelector(`.board__tasks`);
+const isAllTaskArchive = tasks.every((task) => task.isArchive);
 
-let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
-tasks.slice(0, showingTasksCount).forEach((task) => {
-  renderTask(taskListElement, task);
-});
+if (isAllTaskArchive || tasks.length === 0) {
+  render(mainElement, new NoTaskComponent().getElement());
+} else {
+  render(mainElement, new BoardComponent().getElement());
 
-render(boardElement, new LoadMoreBtnComponent().getElement());
+  const boardElement = mainElement.querySelector(`.board`);
+  const taskListElement = boardElement.querySelector(`.board__tasks`);
 
-const loadMoreButton = boardElement.querySelector(`.load-more`);
-loadMoreButton.addEventListener(`click`, () => {
-  const prevTasksCount = showingTasksCount;
-  showingTasksCount = showingTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
+  let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
+  tasks.slice(0, showingTasksCount).forEach((task) => {
+    renderTask(taskListElement, task);
+  });
 
-  tasks.slice(prevTasksCount, showingTasksCount)
-    .forEach((task) => renderTask(taskListElement, task));
+  render(boardElement, new LoadMoreBtnComponent().getElement());
 
-  if (showingTasksCount >= tasks.length) {
-    loadMoreButton.remove();
-  }
-});
+  const loadMoreButton = boardElement.querySelector(`.load-more`);
+  loadMoreButton.addEventListener(`click`, () => {
+    const prevTasksCount = showingTasksCount;
+    showingTasksCount = showingTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
+
+    tasks.slice(prevTasksCount, showingTasksCount)
+      .forEach((task) => renderTask(taskListElement, task));
+
+    if (showingTasksCount >= tasks.length) {
+      loadMoreButton.remove();
+    }
+  });
+}
