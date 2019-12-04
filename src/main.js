@@ -16,14 +16,30 @@ const renderTask = (taskListElement, task) => {
   const taskComponent = new TaskComponent(task);
   const taskFormComponent = new FormTaskComponent(task);
 
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToTask();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const replaceEditToTask = () => {
+    taskListElement.replaceChild(taskComponent.getElement(), taskFormComponent.getElement());
+  };
+  const replaceTaskToEdit = () => {
+    taskListElement.replaceChild(taskFormComponent.getElement(), taskComponent.getElement());
+  };
+
   const editBtn = taskComponent.getElement().querySelector(`.card__btn--edit`);
   editBtn.addEventListener(`click`, () => {
-    taskListElement.replaceChild(taskFormComponent.getElement(), taskComponent.getElement());
+    replaceTaskToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
-
-  const editForm = taskFormComponent.getElement().querySelector(`.card__form`);
-  editForm.addEventListener(`submit`, () => {
-    taskListElement.replaceChild(taskComponent.getElement(), taskFormComponent.getElement());
+  const submitForm = taskFormComponent.getElement().querySelector(`.card__form`);
+  submitForm.addEventListener(`submit`, () => {
+    replaceEditToTask();
   });
 
   render(taskListElement, taskComponent.getElement());
