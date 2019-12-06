@@ -22,26 +22,20 @@ const renderTask = (taskListElement, task) => {
 
     if (isEscKey) {
       replaceEditToTask();
-      document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
 
   const replaceEditToTask = () => {
     taskListElement.replaceChild(taskComponent.getElement(), taskFormComponent.getElement());
+    document.removeEventListener(`keydown`, onEscKeyDown);
   };
   const replaceTaskToEdit = () => {
     taskListElement.replaceChild(taskFormComponent.getElement(), taskComponent.getElement());
+    document.addEventListener(`keydown`, onEscKeyDown);
   };
 
-  const editBtn = taskComponent.getElement().querySelector(`.card__btn--edit`);
-  editBtn.addEventListener(`click`, () => {
-    replaceTaskToEdit();
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
-  const submitForm = taskFormComponent.getElement().querySelector(`.card__form`);
-  submitForm.addEventListener(`submit`, () => {
-    replaceEditToTask();
-  });
+  taskComponent.setEditBtnClickHandler(replaceTaskToEdit);
+  taskFormComponent.setSubmitHandler(replaceEditToTask);
 
   render(taskListElement, taskComponent);
 };

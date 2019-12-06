@@ -190,4 +190,8 @@ export default class FormTask extends AbstractComponent {
   getTemplate() {
     return createFormTaskEditTemplate(this._task);
   }
+
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`.card__form`).addEventListener(`submit`, handler);
+  }
 }
