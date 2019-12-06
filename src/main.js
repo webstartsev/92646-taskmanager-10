@@ -7,7 +7,7 @@ import LoadMoreBtnComponent from './components/load-more-btn';
 import NoTaskComponent from './components/no-tasks.js';
 import {generateTasks} from './mock/task.js';
 import {generateFilters} from './mock/filter.js';
-import {render} from './utils.js';
+import {render, remove} from './utils/render.js';
 
 const TASK_COUNT = 22;
 const SHOWING_TASKS_COUNT_ON_START = 8;
@@ -43,24 +43,24 @@ const renderTask = (taskListElement, task) => {
     replaceEditToTask();
   });
 
-  render(taskListElement, taskComponent.getElement());
+  render(taskListElement, taskComponent);
 };
 
 const mainElement = document.querySelector(`.main`);
 
 const mainControlElement = mainElement.querySelector(`.main__control`);
-render(mainControlElement, new MenuComponent().getElement());
+render(mainControlElement, new MenuComponent());
 
 const tasks = generateTasks(TASK_COUNT);
 const filters = generateFilters(tasks);
-render(mainElement, new FilterComponent(filters).getElement());
+render(mainElement, new FilterComponent(filters));
 
 const isAllTaskArchive = tasks.every((task) => task.isArchive);
 
 if (isAllTaskArchive || tasks.length === 0) {
-  render(mainElement, new NoTaskComponent().getElement());
+  render(mainElement, new NoTaskComponent());
 } else {
-  render(mainElement, new BoardComponent().getElement());
+  render(mainElement, new BoardComponent());
 
   const boardElement = mainElement.querySelector(`.board`);
   const taskListElement = boardElement.querySelector(`.board__tasks`);
@@ -70,7 +70,8 @@ if (isAllTaskArchive || tasks.length === 0) {
     renderTask(taskListElement, task);
   });
 
-  render(boardElement, new LoadMoreBtnComponent().getElement());
+  const loadMoreBtnComponent = new LoadMoreBtnComponent();
+  render(boardElement, loadMoreBtnComponent);
 
   const loadMoreButton = boardElement.querySelector(`.load-more`);
   loadMoreButton.addEventListener(`click`, () => {
@@ -81,7 +82,7 @@ if (isAllTaskArchive || tasks.length === 0) {
       .forEach((task) => renderTask(taskListElement, task));
 
     if (showingTasksCount >= tasks.length) {
-      loadMoreButton.remove();
+      remove(loadMoreBtnComponent);
     }
   });
 }
