@@ -1,4 +1,4 @@
-import {getFullDate} from '../utils.js';
+import {getFullDate} from '../utils/utils.js';
 
 const filterNames = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `tags`, `archive`

@@ -1,5 +1,6 @@
+import AbstractComponent from './abstract-component.js';
 import {Colors, Days, MonthNames} from '../const.js';
-import {formatTime, createElement} from '../utils.js';
+import {formatTime} from '../utils/utils.js';
 
 const createColorsMarkup = (colors, currentColor) => {
   return colors
@@ -179,9 +180,10 @@ const createFormTaskEditTemplate = (task) => {
   );
 };
 
-export default class FormTask {
+export default class FormTask extends AbstractComponent {
   constructor(task) {
-    this._element = null;
+    super();
+
     this._task = task;
   }
 
@@ -189,15 +191,7 @@ export default class FormTask {
     return createFormTaskEditTemplate(this._task);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`.card__form`).addEventListener(`submit`, handler);
   }
 }
