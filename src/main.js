@@ -1,6 +1,6 @@
-import MenuComponent from './components/menu';
-import FilterComponent from './components/filter';
-import BoardComponent from './components/board';
+import MenuComponent from './components/menu.js';
+import FilterComponent from './components/filter.js';
+import BoardComponent from './components/board.js';
 import BoardController from './controllers/board.js';
 import {generateTasks} from './mock/task.js';
 import {generateFilters} from './mock/filter.js';
@@ -16,6 +16,7 @@ render(mainControlElement, menuComponent);
 const tasks = generateTasks(TASK_COUNT);
 const filters = generateFilters(tasks);
 const filterComponent = new FilterComponent(filters);
+render(mainElement, filterComponent);
 render(mainElement, filterComponent);
 
 const boardComponent = new BoardComponent();
