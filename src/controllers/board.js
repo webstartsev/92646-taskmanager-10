@@ -51,26 +51,27 @@ export default class BoardController {
     this._countShowTasks = SHOWING_TASKS_COUNT_ON_START;
   }
 
+  _renderLoadMorebtn(taskListElement, tasks) {
+    const container = this._container.getElement();
+    if (this._countShowTasks >= this._countShowTasks.length) {
+      return;
+    }
+    render(container, this._loadMoreBtnComponent);
+
+    this._loadMoreBtnComponent.setClickHandler(() => {
+      const prevTasksCount = this._countShowTasks;
+      this._countShowTasks = this._countShowTasks + SHOWING_TASKS_COUNT_BY_BUTTON;
+      renderTasks(taskListElement, tasks.slice(prevTasksCount, this._countShowTasks));
+
+      if (this._countShowTasks >= tasks.length) {
+        remove(this._loadMoreBtnComponent);
+      }
+    });
+  }
+
   render(tasks) {
     const container = this._container.getElement();
     const taskListElement = container.querySelector(`.board__tasks`);
-
-    const renderLoadMorebtn = (tasksList) => {
-      if (this._countShowTasks >= tasksList.length) {
-        return;
-      }
-      render(container, this._loadMoreBtnComponent);
-
-      this._loadMoreBtnComponent.setClickHandler(() => {
-        const prevTasksCount = this._countShowTasks;
-        this._countShowTasks = this._countShowTasks + SHOWING_TASKS_COUNT_BY_BUTTON;
-        renderTasks(taskListElement, tasksList.slice(prevTasksCount, this._countShowTasks));
-
-        if (this._countShowTasks >= tasksList.length) {
-          remove(this._loadMoreBtnComponent);
-        }
-      });
-    };
 
     const isAllTaskArchive = tasks.every((task) => task.isArchive);
 
@@ -95,14 +96,16 @@ export default class BoardController {
 
             break;
         }
+
+        remove(this._loadMoreBtnComponent);
         taskListElement.innerHTML = ``;
 
         renderTasks(taskListElement, sortedTask.slice(0, this._countShowTasks));
-        renderLoadMorebtn(sortedTask);
+        this._renderLoadMorebtn(taskListElement, sortedTask);
       });
 
       renderTasks(taskListElement, tasks.slice(0, this._countShowTasks));
-      renderLoadMorebtn(tasks);
+      this._renderLoadMorebtn(taskListElement, tasks);
     }
   }
 }
