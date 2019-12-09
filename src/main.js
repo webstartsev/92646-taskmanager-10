@@ -17,7 +17,6 @@ const tasks = generateTasks(TASK_COUNT);
 const filters = generateFilters(tasks);
 const filterComponent = new FilterComponent(filters);
 render(mainElement, filterComponent);
-render(mainElement, filterComponent);
 
 const boardComponent = new BoardComponent();
 render(mainElement, boardComponent);

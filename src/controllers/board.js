@@ -2,7 +2,8 @@ import LoadMoreBtnComponent from '../components/load-more-btn.js';
 import NoTasksComponent from '../components/no-tasks.js';
 import FormTaskComponent from '../components/form-task.js';
 import TaskComponent from '../components/task.js';
-import {render, remove} from '../utils/render.js';
+import SortComponent from '../components/sort.js';
+import {render, remove, RenderPosition} from '../utils/render.js';
 
 const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
@@ -45,6 +46,7 @@ export default class BoardController {
     this._container = container;
     this._loadMoreBtnComponent = new LoadMoreBtnComponent();
     this._noTasksComponent = new NoTasksComponent();
+    this._sortComponent = new SortComponent();
   }
 
   render(tasks) {
@@ -73,6 +75,7 @@ export default class BoardController {
     if (isAllTaskArchive || tasks.length === 0) {
       render(container, this._noTasksComponent);
     } else {
+      render(container, this._sortComponent, RenderPosition.AFTERBEGIN);
       renderTasks(taskListElement, tasks.slice(0, showingTasksCount));
       renderLoadMorebtn();
     }
