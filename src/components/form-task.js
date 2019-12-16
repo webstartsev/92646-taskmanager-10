@@ -71,12 +71,16 @@ const createHashtags = (tags) => {
     .join(`\n`);
 };
 
+const isRepeating = (repeatingDays) => {
+  return Object.values(repeatingDays).some(Boolean);
+};
+
 const createFormTaskEditTemplate = (task, options = {}) => {
-  const {description, tags, dueDate, color, repeatingDays} = task;
-  const {isDateShowing, isRepeatingTask} = options;
+  const {description, tags, dueDate, color} = task;
+  const {isDateShowing, isRepeatingTask, activeRepeatingDays} = options;
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const isBlockSaveButton = (isDateShowing && isRepeatingTask);
+  const isBlockSaveButton = (isDateShowing && isRepeatingTask) || (isRepeatingTask && !isRepeating(activeRepeatingDays));
 
   const date = (isDateShowing && dueDate) ? `${dueDate.getDate()} ${MonthNames[dueDate.getMonth()]}` : ``;
   const time = (isDateShowing && dueDate) ? formatTime(dueDate) : ``;
@@ -86,7 +90,7 @@ const createFormTaskEditTemplate = (task, options = {}) => {
 
   const tagsMarkup = createHashtags(tags);
   const colorsMarkup = createColorsMarkup(Colors, color);
-  const repeatingDaysMarkup = createRepeatingDaysMarkup(Days, repeatingDays);
+  const repeatingDaysMarkup = createRepeatingDaysMarkup(Days, activeRepeatingDays);
 
   return (
     `<article class="card card--edit card--${color} ${repeatClass} ${deadlineClass}">
@@ -187,12 +191,16 @@ export default class FormTask extends AbstarctSmartComponent {
     this._task = task;
     this._isDateShowing = !!task.dueDate;
     this._isRepeatingTask = Object.values(task.repeatingDays).some(Boolean);
+    this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
+
+    this._subscribeOnEvent();
   }
 
   getTemplate() {
     return createFormTaskEditTemplate(this._task, {
       isDateShowing: this._isDateShowing,
-      isRepeatingTask: this._isRepeatingTask
+      isRepeatingTask: this._isRepeatingTask,
+      activeRepeatingDays: this._activeRepeatingDays,
     });
   }
 
@@ -221,11 +229,21 @@ export default class FormTask extends AbstarctSmartComponent {
         this.rerender();
       });
 
+    const repeatDays = element.querySelector(`.card__repeat-days`);
+    if (repeatDays) {
+      repeatDays.addEventListener(`change`, (evt) => {
+        this._activeRepeatingDays[evt.target.value] = evt.target.checked;
+
+        this.rerender();
+      });
+    }
+
   }
 
   reset() {
     this._isDateShowing = !!this._task.dueDate;
     this._isRepeatingTask = Object.values(this._task.repeatingDays).some(Boolean);
+    this._activeRepeatingDays = Object.assign({}, this._task.repeatingDays);
 
     this.rerender();
   }
