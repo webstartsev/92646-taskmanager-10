@@ -29,6 +29,8 @@ export class TaskController {
   }
 
   _replaceTaskToEdit() {
+    this._formTaskComponet.reset();
+
     replace(this._formTaskComponet, this._taskComponet);
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
