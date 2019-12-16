@@ -3,8 +3,9 @@ import TaskComponent from '../components/task.js';
 import {render, replace} from '../utils/render.js';
 
 export class TaskController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
 
     this._taskComponet = null;
     this._formTaskComponet = null;
@@ -34,12 +35,31 @@ export class TaskController {
 
 
   render(task) {
+    const oldTaskComponent = this._taskComponet;
+    const oldFromTaskComponent = this._formTaskComponet;
+
     this._taskComponet = new TaskComponent(task);
     this._formTaskComponet = new FormTaskComponent(task);
 
-    render(this._container, this._taskComponet);
-
     this._taskComponet.setEditBtnClickHandler(this._replaceTaskToEdit);
+    this._taskComponet.setFavoriteClickHandler(() => {
+      this._onDataChange(this, task, Object.assign({}, task, {
+        isFavorite: !task.isFavorite
+      }));
+    });
+    this._taskComponet.setArchiveClickHandler(() => {
+      this._onDataChange(this, task, Object.assign({}, task, {
+        isArchive: !task.isArchive
+      }));
+    });
+
     this._formTaskComponet.setSubmitHandler(this._replaceEditToTask);
+
+    if (oldTaskComponent && oldFromTaskComponent) {
+      replace(this._taskComponet, oldTaskComponent);
+      replace(this._formTaskComponet, oldFromTaskComponent);
+    } else {
+      render(this._container, this._taskComponet);
+    }
   }
 }
