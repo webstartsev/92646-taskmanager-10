@@ -2,10 +2,17 @@ import FormTaskComponent from '../components/form-task.js';
 import TaskComponent from '../components/task.js';
 import {render, replace} from '../utils/render.js';
 
+const Mode = {
+  DEFAULT: `default`,
+  EDIT: `edit`,
+};
+
 export class TaskController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
+    this._mode = Mode.DEFAULT;
 
     this._taskComponet = null;
     this._formTaskComponet = null;
@@ -24,17 +31,26 @@ export class TaskController {
   }
 
   _replaceEditToTask() {
+    this._formTaskComponet.reset();
+
     replace(this._taskComponet, this._formTaskComponet);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+    this._mode = Mode.DEFAULT;
   }
 
   _replaceTaskToEdit() {
-    this._formTaskComponet.reset();
+    this._onViewChange();
 
     replace(this._formTaskComponet, this._taskComponet);
     document.addEventListener(`keydown`, this._onEscKeyDown);
+    this._mode = Mode.EDIT;
   }
 
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceEditToTask();
+    }
+  }
 
   render(task) {
     const oldTaskComponent = this._taskComponet;
