@@ -2,7 +2,7 @@ import FilterComponent from '../components/filter.js';
 import {generateFilters} from '../mock/filter.js';
 import {render} from '../utils/render.js';
 
-export default class Filter {
+export default class FilterController {
   constructor(container, tasksModel) {
     this._container = container;
     this._tasksModel = tasksModel;
