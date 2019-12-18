@@ -1,6 +1,7 @@
 import LoadMoreBtnComponent from '../components/load-more-btn.js';
 import NoTasksComponent from '../components/no-tasks.js';
 import SortComponent from '../components/sort.js';
+import BoardComponent from '../components/board.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {SortType} from '../const.js';
 import TaskController from './task.js';
@@ -22,9 +23,11 @@ export default class BoardController {
     this._container = container;
     this._countShowTasks = SHOWING_TASKS_COUNT_ON_START;
     this._showedTaskControllers = [];
+    this._boardElement = null;
 
     this._tasksModel = tasksModel;
 
+    this._boardComponent = new BoardComponent();
     this._loadMoreBtnComponent = new LoadMoreBtnComponent();
     this._noTasksComponent = new NoTasksComponent();
     this._sortComponent = new SortComponent();
@@ -34,11 +37,10 @@ export default class BoardController {
   }
 
   _renderLoadMorebtn(taskListElement, tasks) {
-    const container = this._container.getElement();
     if (this._countShowTasks >= this._countShowTasks.length) {
       return;
     }
-    render(container, this._loadMoreBtnComponent);
+    render(this._boardElement, this._loadMoreBtnComponent);
 
     this._loadMoreBtnComponent.setClickHandler(() => {
       const prevTasksCount = this._countShowTasks;
@@ -69,16 +71,18 @@ export default class BoardController {
   }
 
   render() {
+    render(this._container, this._boardComponent);
+
     const tasks = this._tasksModel.getTasks();
-    const container = this._container.getElement();
-    const taskListElement = container.querySelector(`.board__tasks`);
+    const taskListElement = this._container.querySelector(`.board__tasks`);
 
     const isAllTaskArchive = tasks.every((task) => task.isArchive);
 
     if (isAllTaskArchive || tasks.length === 0) {
-      render(container, this._noTasksComponent);
+      render(this._container, this._noTasksComponent);
     } else {
-      render(container, this._sortComponent, RenderPosition.AFTERBEGIN);
+      this._boardElement = this._boardComponent.getElement();
+      render(this._boardElement, this._sortComponent, RenderPosition.AFTERBEGIN);
 
       this._sortComponent.setClickSortHandler((sortType) => {
         let sortedTask = [];
