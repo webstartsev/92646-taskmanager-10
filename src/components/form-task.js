@@ -1,6 +1,9 @@
+import flatpickr from 'flatpickr';
 import AbstarctSmartComponent from './abstract-smart-component';
 import {Colors, Days, MonthNames} from '../const.js';
 import {formatTime} from '../utils/utils.js';
+
+import '../../node_modules/flatpickr/dist/themes/light.css';
 
 const createColorsMarkup = (colors, currentColor) => {
   return colors
@@ -192,7 +195,9 @@ export default class FormTask extends AbstarctSmartComponent {
     this._isDateShowing = !!task.dueDate;
     this._isRepeatingTask = Object.values(task.repeatingDays).some(Boolean);
     this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
+    this._flatpickr = null;
 
+    this._applyFlatpickr();
     this._subscribeOnEvent();
   }
 
@@ -202,6 +207,22 @@ export default class FormTask extends AbstarctSmartComponent {
       isRepeatingTask: this._isRepeatingTask,
       activeRepeatingDays: this._activeRepeatingDays,
     });
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    if (this._isDateShowing) {
+      const dateElement = this.getElement().querySelector(`.card__date`);
+      this._flatpickr = flatpickr(dateElement, {
+        altInput: true,
+        allowInput: true,
+        defaultDate: this._task.dueDate,
+      });
+    }
   }
 
   setSubmitHandler(handler) {
@@ -237,7 +258,12 @@ export default class FormTask extends AbstarctSmartComponent {
         this.rerender();
       });
     }
+  }
 
+  rerender() {
+    super.rerender();
+
+    this._applyFlatpickr();
   }
 
   reset() {
