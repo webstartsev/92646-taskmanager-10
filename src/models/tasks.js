@@ -1,9 +1,17 @@
-export default class Task {
+import {FilterType} from "../const.js";
+import {getTasksByFilter} from "../utils/filters.js";
+
+export default class Tasks {
   constructor() {
     this._tasks = [];
+    this._activeFilterType = FilterType.ALL;
   }
 
   getTasks() {
+    return getTasksByFilter(this._tasks, this._activeFilterType);
+  }
+
+  getAllTasks() {
     return this._tasks;
   }
 
@@ -21,5 +29,9 @@ export default class Task {
     this._tasks = [].concat(this._tasks.slice(0, index), newTask, this._tasks.slice(index + 1));
 
     return true;
+  }
+
+  setFilter(filterType) {
+    this._activeFilterType = filterType;
   }
 }
