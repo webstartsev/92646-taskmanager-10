@@ -3,7 +3,7 @@ import NoTasksComponent from '../components/no-tasks.js';
 import SortComponent from '../components/sort.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {SortType} from '../const.js';
-import {TaskController} from './task.js';
+import TaskController from './task.js';
 
 const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
@@ -18,11 +18,12 @@ const renderTasks = (taskListElement, tasks, onDataChange, onViewChange) => {
 };
 
 export default class BoardController {
-  constructor(container) {
+  constructor(container, tasksModel) {
     this._container = container;
     this._countShowTasks = SHOWING_TASKS_COUNT_ON_START;
-    this._tasks = [];
     this._showedTaskControllers = [];
+
+    this._tasksModel = tasksModel;
 
     this._loadMoreBtnComponent = new LoadMoreBtnComponent();
     this._noTasksComponent = new NoTasksComponent();
@@ -67,14 +68,14 @@ export default class BoardController {
     this._showedTaskControllers.forEach((task) => task.setDefaultView());
   }
 
-  render(tasks) {
-    this._tasks = tasks;
+  render() {
+    const tasks = this._tasksModel.getTasks();
     const container = this._container.getElement();
     const taskListElement = container.querySelector(`.board__tasks`);
 
-    const isAllTaskArchive = this._tasks.every((task) => task.isArchive);
+    const isAllTaskArchive = tasks.every((task) => task.isArchive);
 
-    if (isAllTaskArchive || this._tasks.length === 0) {
+    if (isAllTaskArchive || tasks.length === 0) {
       render(container, this._noTasksComponent);
     } else {
       render(container, this._sortComponent, RenderPosition.AFTERBEGIN);
@@ -84,14 +85,14 @@ export default class BoardController {
 
         switch (sortType) {
           case SortType.DATE_UP:
-            sortedTask = this._tasks.slice().sort((a, b) => a.dueDate - b.dueDate);
+            sortedTask = tasks.slice().sort((a, b) => a.dueDate - b.dueDate);
             break;
           case SortType.DATE_DOWN:
-            sortedTask = this._tasks.slice().sort((a, b) => b.dueDate - a.dueDate);
+            sortedTask = tasks.slice().sort((a, b) => b.dueDate - a.dueDate);
             break;
           case SortType.DEFAULT:
           default:
-            sortedTask = this._tasks.slice();
+            sortedTask = tasks.slice();
 
             break;
         }
@@ -105,10 +106,10 @@ export default class BoardController {
         this._renderLoadMorebtn(taskListElement, sortedTask);
       });
 
-      const newTasks = renderTasks(taskListElement, this._tasks.slice(0, this._countShowTasks), this._onDataChange, this._onViewChange);
+      const newTasks = renderTasks(taskListElement, tasks.slice(0, this._countShowTasks), this._onDataChange, this._onViewChange);
       this._showedTaskControllers = newTasks;
 
-      this._renderLoadMorebtn(taskListElement, this._tasks);
+      this._renderLoadMorebtn(taskListElement, tasks);
     }
   }
 }
