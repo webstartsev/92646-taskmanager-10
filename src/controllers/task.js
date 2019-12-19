@@ -72,6 +72,9 @@ export default class TaskController {
     });
 
     this._formTaskComponet.setSubmitHandler(this._replaceEditToTask);
+    this._formTaskComponet.setDeleteButtonClickHandler(() => {
+      this._onDataChange(task, null);
+    });
 
     if (oldTaskComponent && oldFromTaskComponent) {
       replace(this._taskComponet, oldTaskComponent);

@@ -260,6 +260,11 @@ export default class FormTask extends AbstarctSmartComponent {
     }
   }
 
+  setDeleteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.card__delete`)
+      .addEventListener(`click`, handler);
+  }
+
   rerender() {
     super.rerender();
 

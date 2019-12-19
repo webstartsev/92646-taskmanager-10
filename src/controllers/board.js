@@ -71,16 +71,11 @@ export default class BoardController {
   }
 
   _onDataChange(oldTask, newTask) {
-    let tasks = this._tasksModel.getAllTasks();
-    const index = tasks.findIndex((task) => task === oldTask);
-
-    if (index === -1) {
-      return;
+    if (newTask === null) {
+      this._tasksModel.removeTask(oldTask.id);
+    } else {
+      this._tasksModel.updateTask(oldTask.id, newTask);
     }
-
-    tasks = [].concat(tasks.slice(0, index), newTask, tasks.slice(index + 1));
-
-    this._tasksModel.setTasks(tasks);
     this._updateTasks(this._countShowTasks);
   }
 
