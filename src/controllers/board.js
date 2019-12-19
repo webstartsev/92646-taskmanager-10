@@ -28,6 +28,7 @@ export default class BoardController {
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
+    this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
 
     this._tasksModel.setFilterChangeHandler(this._onFilterChange);
     this._sortComponent.setClickSortHandler(this._onSortTypeChange);
@@ -45,32 +46,42 @@ export default class BoardController {
     this._countShowTasks = this._showedTaskControllers.length;
   }
 
-  _renderLoadMorebtn(tasks) {
-    if (this._countShowTasks >= this._countShowTasks.length) {
+  _renderLoadMorebtn() {
+    const tasks = this._tasksModel.getTasks();
+    remove(this._loadMoreBtnComponent);
+
+    if (this._countShowTasks >= tasks.length) {
       return;
     }
+
     render(this._boardElement, this._loadMoreBtnComponent);
+    this._loadMoreBtnComponent.setClickHandler(this._onLoadMoreButtonClick);
+  }
 
-    this._loadMoreBtnComponent.setClickHandler(() => {
-      const prevTasksCount = this._countShowTasks;
-      this._countShowTasks = this._countShowTasks + SHOWING_TASKS_COUNT_BY_BUTTON;
-      this._renderTasks(tasks.slice(prevTasksCount, this._countShowTasks));
+  _onLoadMoreButtonClick() {
+    const tasks = this._tasksModel.getTasks();
 
-      if (this._countShowTasks >= tasks.length) {
-        remove(this._loadMoreBtnComponent);
-      }
-    });
+    const prevTasksCount = this._countShowTasks;
+    this._countShowTasks = this._countShowTasks + SHOWING_TASKS_COUNT_BY_BUTTON;
+    this._renderTasks(tasks.slice(prevTasksCount, this._countShowTasks));
+
+    if (this._countShowTasks >= tasks.length) {
+      remove(this._loadMoreBtnComponent);
+    }
   }
 
   _onDataChange(taskController, oldTask, newTask) {
-    const index = this._tasks.findIndex((task) => task === oldTask);
+    let tasks = this._tasksModel.getAllTasks();
+    const index = tasks.findIndex((task) => task === oldTask);
 
     if (index === -1) {
       return;
     }
 
-    this._tasks = [].concat(this._tasks.slice(0, index), newTask, this._tasks.slice(index + 1));
-    taskController.render(this._tasks[index]);
+    tasks = [].concat(tasks.slice(0, index), newTask, tasks.slice(index + 1));
+
+    this._tasksModel.setTasks(tasks);
+    this._updateTasks(this._countShowTasks);
   }
 
   _onViewChange() {
@@ -93,7 +104,7 @@ export default class BoardController {
       render(this._boardElement, this._sortComponent, RenderPosition.AFTERBEGIN);
 
       this._renderTasks(tasks.slice(0, this._countShowTasks));
-      this._renderLoadMorebtn(tasks);
+      this._renderLoadMorebtn();
     }
   }
 
@@ -117,7 +128,7 @@ export default class BoardController {
     this._removeTasks();
     this._renderTasks(sortedTasks);
 
-    this._renderLoadMorebtn(sortedTasks);
+    this._renderLoadMorebtn();
   }
 
   _removeTasks() {
@@ -129,7 +140,7 @@ export default class BoardController {
     const tasks = this._tasksModel.getTasks().slice(0, count);
     this._removeTasks();
     this._renderTasks(tasks);
-    this._renderLoadMorebtn(tasks);
+    this._renderLoadMorebtn();
   }
 
   _onFilterChange() {
