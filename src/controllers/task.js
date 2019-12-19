@@ -1,6 +1,6 @@
 import FormTaskComponent from '../components/form-task.js';
 import TaskComponent from '../components/task.js';
-import {render, replace} from '../utils/render.js';
+import {render, replace, remove} from '../utils/render.js';
 
 const Mode = {
   DEFAULT: `default`,
@@ -79,5 +79,11 @@ export default class TaskController {
     } else {
       render(this._container, this._taskComponet);
     }
+  }
+
+  destroy() {
+    remove(this._formTaskComponet);
+    remove(this._taskComponet);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 }

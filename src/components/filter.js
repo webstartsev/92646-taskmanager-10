@@ -6,8 +6,8 @@ const getFilterNameById = (id) => {
   return id.substring(FILTER_ID_PREFIX.length);
 };
 
-const createFilterMarkup = (filter, {isChecked}) => {
-  const {name, count} = filter;
+const createFilterMarkup = (filter) => {
+  const {name, count, isChecked} = filter;
 
   return (
     `<input
@@ -24,7 +24,7 @@ const createFilterMarkup = (filter, {isChecked}) => {
 };
 
 const createFilterTemplate = (filters) => {
-  const filtersMarkup = filters.map((filter, i) => createFilterMarkup(filter, {isChecked: i === 0})).join(`\n`);
+  const filtersMarkup = filters.map((filter) => createFilterMarkup(filter)).join(`\n`);
 
   return (
     `<section class="main__filter filter container">

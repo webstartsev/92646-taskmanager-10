@@ -1,7 +1,6 @@
 import {isRepeating, isOneDay, isOverdueDate} from './utils.js';
 import {FilterType} from '../const.js';
 
-
 export const getArchiveTasks = (tasks) => {
   return tasks.filter((task) => task.isArchive);
 };

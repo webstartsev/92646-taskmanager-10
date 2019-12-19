@@ -5,6 +5,9 @@ export default class Tasks {
   constructor() {
     this._tasks = [];
     this._activeFilterType = FilterType.ALL;
+
+    this._dataChangeHandlers = [];
+    this._filterChangeHandlers = [];
   }
 
   getTasks() {
@@ -33,5 +36,18 @@ export default class Tasks {
 
   setFilter(filterType) {
     this._activeFilterType = filterType;
+    this._callHandlers(this._filterChangeHandlers);
+  }
+
+  setFilterChangeHandler(handler) {
+    this._filterChangeHandlers.push(handler);
+  }
+
+  setDataChangeHandler(handler) {
+    this._dataChangeHandlers.push(handler);
+  }
+
+  _callHandlers(handlers) {
+    handlers.forEach((handler) => handler());
   }
 }
