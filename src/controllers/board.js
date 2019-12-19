@@ -70,7 +70,7 @@ export default class BoardController {
     }
   }
 
-  _onDataChange(taskController, oldTask, newTask) {
+  _onDataChange(oldTask, newTask) {
     let tasks = this._tasksModel.getAllTasks();
     const index = tasks.findIndex((task) => task === oldTask);
 

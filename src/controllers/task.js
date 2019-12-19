@@ -61,12 +61,12 @@ export default class TaskController {
 
     this._taskComponet.setEditBtnClickHandler(this._replaceTaskToEdit);
     this._taskComponet.setFavoriteClickHandler(() => {
-      this._onDataChange(this, task, Object.assign({}, task, {
+      this._onDataChange(task, Object.assign({}, task, {
         isFavorite: !task.isFavorite
       }));
     });
     this._taskComponet.setArchiveClickHandler(() => {
-      this._onDataChange(this, task, Object.assign({}, task, {
+      this._onDataChange(task, Object.assign({}, task, {
         isArchive: !task.isArchive
       }));
     });
