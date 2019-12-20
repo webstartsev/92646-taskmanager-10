@@ -22,3 +22,7 @@ filterController.render();
 
 const boardController = new BoardController(mainElement, tasksModel);
 boardController.render();
+
+menuComponent.setClickNewTaskHandler(() => {
+  boardController.createTask();
+});

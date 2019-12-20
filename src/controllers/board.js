@@ -4,7 +4,7 @@ import SortComponent from '../components/sort.js';
 import BoardComponent from '../components/board.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {SortType} from '../const.js';
-import TaskController from './task.js';
+import TaskController, {EmptyTask, Mode} from './task.js';
 
 const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
@@ -16,6 +16,7 @@ export default class BoardController {
     this._showedTaskControllers = [];
     this._boardElement = null;
     this._taskListElement = null;
+    this._creatingTask = null;
 
     this._tasksModel = tasksModel;
 
@@ -30,6 +31,7 @@ export default class BoardController {
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
 
+
     this._tasksModel.setFilterChangeHandler(this._onFilterChange);
     this._sortComponent.setClickSortHandler(this._onSortTypeChange);
   }
@@ -37,7 +39,7 @@ export default class BoardController {
   _renderTasks(tasks) {
     const newTasks = tasks.map((task) => {
       const taskController = new TaskController(this._taskListElement, this._onDataChange, this._onViewChange);
-      taskController.render(task);
+      taskController.render(task, Mode.DEFAULT);
 
       return taskController;
     });
@@ -70,7 +72,15 @@ export default class BoardController {
     }
   }
 
-  _onDataChange(oldTask, newTask) {
+  _onDataChange(taskController, oldTask, newTask) {
+    if (oldTask === EmptyTask) {
+      this._creatingTask = null;
+      if (newTask === null) {
+        taskController.destroy();
+        this._updateTasks(this._showingTasksCount);
+      }
+    }
+
     if (newTask === null) {
       this._tasksModel.removeTask(oldTask.id);
     } else {
@@ -101,6 +111,15 @@ export default class BoardController {
       this._renderTasks(tasks.slice(0, this._countShowTasks));
       this._renderLoadMorebtn();
     }
+  }
+
+  createTask() {
+    if (this._creatingTask) {
+      return;
+    }
+
+    this._creatingTask = new TaskController(this._taskListElement, this._onDataChange, this._onViewChange);
+    this._creatingTask.render(EmptyTask, Mode.ADDING);
   }
 
   _onSortTypeChange(sortType) {
