@@ -15,6 +15,7 @@ const createFilterMarkup = (filter) => {
         id="filter__${name}"
         class="filter__input visually-hidden"
         name="filter"
+        ${count === 0 ? `disabled` : ``}
         ${isChecked ? `checked` : ``}
       />
       <label for="filter__${name}" class="filter__label">
