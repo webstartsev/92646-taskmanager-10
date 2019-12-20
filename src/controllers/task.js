@@ -96,7 +96,12 @@ export default class TaskController {
       }));
     });
 
-    this._formTaskComponet.setSubmitHandler(this._replaceEditToTask);
+    this._formTaskComponet.setSubmitHandler((evt) => {
+      evt.preventDefault();
+      const data = this._formTaskComponet.getData();
+      this._onDataChange(this, task, data);
+    });
+
     this._formTaskComponet.setDeleteButtonClickHandler(() => {
       this._onDataChange(this, task, null);
     });

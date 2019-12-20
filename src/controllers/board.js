@@ -77,7 +77,15 @@ export default class BoardController {
       this._creatingTask = null;
       if (newTask === null) {
         taskController.destroy();
-        this._updateTasks(this._showingTasksCount);
+      } else {
+        this._tasksModel.addTask(newTask);
+        taskController.render(newTask, Mode.DEFAULT);
+
+        const destroyedTask = this._showedTaskControllers.pop();
+        destroyedTask.destroy();
+
+        this._showedTaskControllers = [].concat(taskController, this._showedTaskControllers);
+        this._showingTasksCount = this._showedTaskControllers.length;
       }
     }
 
