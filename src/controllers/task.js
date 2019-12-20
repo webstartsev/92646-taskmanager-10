@@ -111,6 +111,7 @@ export default class TaskController {
         if (oldTaskComponent && oldFromTaskComponent) {
           replace(this._taskComponet, oldTaskComponent);
           replace(this._formTaskComponet, oldFromTaskComponent);
+          this._replaceEditToTask();
         } else {
           render(this._container, this._taskComponet);
         }
