@@ -16,10 +16,25 @@ const isAllowableDescriptionLength = (description) => {
 };
 
 const parseFormData = (formData) => {
-  const repeatingDays = Days.reduce((acc, day) => {
-    acc[day] = false;
-    return acc;
-  }, {});
+  // const repeatingDays = Days.reduce((acc, day) => {
+
+  //   acc[day] = false;
+  //   return {...acc};
+  // }, {});
+
+
+  // console.log('repeatingDays: ', repeatingDays);
+
+  // console.log('formData.getAll(`repeat`): ', formData.getAll(`repeat`));
+  // const ttt = formData.getAll(`repeat`).reduce((acc, it) => {
+
+  //   console.log('it: ', it);
+
+  //   acc[it] = true;
+  //   return {...acc};
+  // }, {});
+  // console.log('ttt: ', ttt);
+
   const date = formData.get(`date`);
 
   return {
@@ -29,8 +44,8 @@ const parseFormData = (formData) => {
     dueDate: date ? new Date(date) : null,
     repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
       acc[it] = true;
-      return acc;
-    }, repeatingDays),
+      return {...acc};
+    }, {}),
   };
 };
 
