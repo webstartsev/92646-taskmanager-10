@@ -44,7 +44,7 @@ export default class BoardController {
       return taskController;
     });
 
-    this._showedTaskControllers = this._showedTaskControllers.concat(newTasks);
+    this._showedTaskControllers = [...this._showedTaskControllers, ...newTasks];
     this._countShowTasks = this._showedTaskControllers.length;
   }
 
@@ -84,7 +84,9 @@ export default class BoardController {
         const destroyedTask = this._showedTaskControllers.pop();
         destroyedTask.destroy();
 
-        this._showedTaskControllers = [].concat(taskController, this._showedTaskControllers);
+        this._showedTaskControllers = [taskController, ...this._showedTaskControllers];
+        console.log('this._showedTaskControllers: ', this._showedTaskControllers);
+        console.log('taskController: ', taskController);
         this._showingTasksCount = this._showedTaskControllers.length;
       }
     }

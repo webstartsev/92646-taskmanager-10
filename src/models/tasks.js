@@ -29,7 +29,7 @@ export default class Tasks {
       return false;
     }
 
-    this._tasks = [].concat(this._tasks.slice(0, index), newTask, this._tasks.slice(index + 1));
+    this._tasks = [...this._tasks.slice(0, index), newTask, ...this._tasks.slice(index + 1)];
     this._callHandlers(this._dataChangeHandlers);
 
     return true;
@@ -42,14 +42,14 @@ export default class Tasks {
       return false;
     }
 
-    this._tasks = [].concat(this._tasks.slice(0, index), this._tasks.slice(index + 1));
+    this._tasks = [...this._tasks.slice(0, index), ...this._tasks.slice(index + 1)];
     this._callHandlers(this._dataChangeHandlers);
 
     return true;
   }
 
   addTask(task) {
-    this._tasks = [].concat(task, this._tasks);
+    this._tasks = [task, ...this._tasks];
     this._callHandlers(this._dataChangeHandlers);
   }
 
