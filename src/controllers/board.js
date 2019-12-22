@@ -85,8 +85,6 @@ export default class BoardController {
         destroyedTask.destroy();
 
         this._showedTaskControllers = [taskController, ...this._showedTaskControllers];
-        console.log('this._showedTaskControllers: ', this._showedTaskControllers);
-        console.log('taskController: ', taskController);
         this._showingTasksCount = this._showedTaskControllers.length;
       }
     }
