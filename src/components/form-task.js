@@ -5,6 +5,31 @@ import {formatTime} from '../utils/utils.js';
 
 import '../../node_modules/flatpickr/dist/themes/light.css';
 
+const MIN_DESCRIPTION_LENGTH = 1;
+const MAX_DESCRIPTION_LENGTH = 140;
+
+const isAllowableDescriptionLength = (description) => {
+  const length = description.length;
+
+  return length >= MIN_DESCRIPTION_LENGTH &&
+    length <= MAX_DESCRIPTION_LENGTH;
+};
+
+const parseFormData = (formData) => {
+  const date = formData.get(`date`);
+
+  return {
+    description: formData.get(`text`),
+    color: formData.get(`color`),
+    tags: formData.getAll(`hashtag`),
+    dueDate: date ? new Date(date) : null,
+    repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
+      acc[it] = true;
+      return Object.assign({}, acc);
+    }, {})
+  };
+};
+
 const createColorsMarkup = (colors, currentColor) => {
   return colors
     .map((color, i) => {
@@ -83,7 +108,7 @@ const createFormTaskEditTemplate = (task, options = {}) => {
   const {isDateShowing, isRepeatingTask, activeRepeatingDays} = options;
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const isBlockSaveButton = (isDateShowing && isRepeatingTask) || (isRepeatingTask && !isRepeating(activeRepeatingDays));
+  const isBlockSaveButton = (isDateShowing && isRepeatingTask) || (isRepeatingTask && !isRepeating(activeRepeatingDays)) || !isAllowableDescriptionLength(description);
 
   const date = (isDateShowing && dueDate) ? `${dueDate.getDate()} ${MonthNames[dueDate.getMonth()]}` : ``;
   const time = (isDateShowing && dueDate) ? formatTime(dueDate) : ``;
@@ -196,6 +221,8 @@ export default class FormTask extends AbstarctSmartComponent {
     this._isRepeatingTask = Object.values(task.repeatingDays).some(Boolean);
     this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
     this._flatpickr = null;
+    this._submitHandler = null;
+    this._deleteButtonClickHandler = null;
 
     this._applyFlatpickr();
     this._subscribeOnEvent();
@@ -226,15 +253,28 @@ export default class FormTask extends AbstarctSmartComponent {
   }
 
   setSubmitHandler(handler) {
-    this.getElement().querySelector(`.card__form`).addEventListener(`submit`, handler);
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
+
+    this._submitHandler = handler;
   }
 
   recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this._subscribeOnEvent();
   }
 
   _subscribeOnEvent() {
     const element = this.getElement();
+
+    element.querySelector(`.card__text`)
+      .addEventListener(`input`, (evt) => {
+        this._currentDescription = evt.target.value;
+
+        const saveButton = this.getElement().querySelector(`.card__save`);
+        saveButton.disabled = !isAllowableDescriptionLength(this._currentDescription);
+      });
 
     element.querySelector(`.card__date-deadline-toggle`)
       .addEventListener(`click`, () => {
@@ -260,6 +300,29 @@ export default class FormTask extends AbstarctSmartComponent {
     }
   }
 
+  getData() {
+    const form = this.getElement().querySelector(`.card__form`);
+    const formData = new FormData(form);
+
+    return parseFormData(formData);
+  }
+
+  removeElement() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    super.removeElement();
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.card__delete`)
+      .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
+  }
+
   rerender() {
     super.rerender();
 
@@ -267,9 +330,12 @@ export default class FormTask extends AbstarctSmartComponent {
   }
 
   reset() {
+    const task = this._task;
+
     this._isDateShowing = !!this._task.dueDate;
     this._isRepeatingTask = Object.values(this._task.repeatingDays).some(Boolean);
     this._activeRepeatingDays = Object.assign({}, this._task.repeatingDays);
+    this._currentDescription = task.description;
 
     this.rerender();
   }

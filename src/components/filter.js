@@ -1,7 +1,13 @@
 import AbstractComponent from './abstract-component.js';
 
-const createFilterMarkup = (filter, {isChecked}) => {
-  const {name, count} = filter;
+const FILTER_ID_PREFIX = `filter__`;
+
+const getFilterNameById = (id) => {
+  return id.substring(FILTER_ID_PREFIX.length);
+};
+
+const createFilterMarkup = (filter) => {
+  const {name, count, isChecked} = filter;
 
   return (
     `<input
@@ -9,6 +15,7 @@ const createFilterMarkup = (filter, {isChecked}) => {
         id="filter__${name}"
         class="filter__input visually-hidden"
         name="filter"
+        ${count === 0 ? `disabled` : ``}
         ${isChecked ? `checked` : ``}
       />
       <label for="filter__${name}" class="filter__label">
@@ -18,7 +25,7 @@ const createFilterMarkup = (filter, {isChecked}) => {
 };
 
 const createFilterTemplate = (filters) => {
-  const filtersMarkup = filters.map((filter, i) => createFilterMarkup(filter, {isChecked: i === 0})).join(`\n`);
+  const filtersMarkup = filters.map((filter) => createFilterMarkup(filter)).join(`\n`);
 
   return (
     `<section class="main__filter filter container">
@@ -36,5 +43,16 @@ export default class Filter extends AbstractComponent {
 
   getTemplate() {
     return createFilterTemplate(this._filters);
+  }
+
+  setFilterChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      const filterName = getFilterNameById(evt.target.id);
+      if (!filterName) {
+        return;
+      }
+
+      handler(filterName);
+    });
   }
 }

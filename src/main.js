@@ -1,9 +1,9 @@
 import MenuComponent from './components/menu.js';
-import FilterComponent from './components/filter.js';
-import BoardComponent from './components/board.js';
 import BoardController from './controllers/board.js';
+import FilterController from "./controllers/filter.js";
+import TasksModel from "./models/tasks.js";
 import {generateTasks} from './mock/task.js';
-import {generateFilters} from './mock/filter.js';
+
 import {render} from './utils/render.js';
 
 const TASK_COUNT = 22;
@@ -14,13 +14,15 @@ const menuComponent = new MenuComponent();
 render(mainControlElement, menuComponent);
 
 const tasks = generateTasks(TASK_COUNT);
-const filters = generateFilters(tasks);
-const filterComponent = new FilterComponent(filters);
-render(mainElement, filterComponent);
+const tasksModel = new TasksModel();
+tasksModel.setTasks(tasks);
 
-const boardComponent = new BoardComponent();
-render(mainElement, boardComponent);
+const filterController = new FilterController(mainElement, tasksModel);
+filterController.render();
 
-const boardController = new BoardController(boardComponent);
+const boardController = new BoardController(mainElement, tasksModel);
+boardController.render();
 
-boardController.render(tasks);
+menuComponent.setClickNewTaskHandler(() => {
+  boardController.createTask();
+});

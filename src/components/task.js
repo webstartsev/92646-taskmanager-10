@@ -1,3 +1,4 @@
+import he from "he";
 import AbstractComponent from './abstract-component.js';
 
 import {MonthNames} from '../const.js';
@@ -18,8 +19,7 @@ const createHashtagsMarkup = (hashtags) => {
 };
 
 const createTaskTemplate = (task) => {
-
-  const {description, dueDate, repeatingDays, tags, color, isArchive, isFavorite} = task;
+  const {dueDate, repeatingDays, tags, color, isArchive, isFavorite} = task;
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
@@ -27,6 +27,7 @@ const createTaskTemplate = (task) => {
 
   const date = isDateShowing ? `${dueDate.getDate()} ${MonthNames[dueDate.getMonth()]}` : ``;
   const time = isDateShowing ? formatTime(dueDate) : ``;
+  const description = he.encode(task.description);
 
   const hashtags = createHashtagsMarkup(Array.from(tags));
   const repeatClass = isRepaet ? `card--repeat` : ``;
