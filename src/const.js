@@ -40,3 +40,5 @@ export const FilterType = {
   TAGS: `tags`,
   TODAY: `today`,
 };
+
+export const HIDDEN_CLASS = `visually-hidden`;

@@ -3,7 +3,7 @@ import NoTasksComponent from '../components/no-tasks.js';
 import SortComponent from '../components/sort.js';
 import BoardComponent from '../components/board.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
-import {SortType} from '../const.js';
+import {SortType, HIDDEN_CLASS} from '../const.js';
 import TaskController, {EmptyTask, Mode} from './task.js';
 
 const SHOWING_TASKS_COUNT_ON_START = 8;
@@ -167,5 +167,13 @@ export default class BoardController {
 
   _onFilterChange() {
     this._updateTasks(SHOWING_TASKS_COUNT_ON_START);
+  }
+
+  show() {
+    this._container.classList.remove(HIDDEN_CLASS);
+  }
+
+  hide() {
+    this._container.classList.add(HIDDEN_CLASS);
   }
 }
