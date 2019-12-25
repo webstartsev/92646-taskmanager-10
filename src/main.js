@@ -1,4 +1,5 @@
 import MenuComponent from './components/menu.js';
+import StatisticComponent from "./components/statistic.js";
 import BoardController from './controllers/board.js';
 import FilterController from "./controllers/filter.js";
 import TasksModel from "./models/tasks.js";
@@ -22,6 +23,9 @@ filterController.render();
 
 const boardController = new BoardController(mainElement, tasksModel);
 boardController.render();
+
+const statisticComponent = new StatisticComponent();
+render(mainControlElement, statisticComponent);
 
 menuComponent.setClickNewTaskHandler(() => {
   boardController.createTask();
