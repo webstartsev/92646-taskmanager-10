@@ -8,6 +8,14 @@ export const Color = {
 
 export const Colors = [Color.BLACK, Color.YELLOW, Color.BLUE, Color.GREEN, Color.PINK];
 
+export const ColorValue = {
+  [Color.BLACK]: `#000000`,
+  [Color.BLUE]: `#0c5cdd`,
+  [Color.GREEN]: `#31b55c`,
+  [Color.PINK]: `#ff3cb9`,
+  [Color.YELLOW]: `#ffe125`,
+};
+
 export const Days = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
 
 export const MonthNames = [
