@@ -170,10 +170,10 @@ export default class BoardController {
   }
 
   show() {
-    this._container.classList.remove(HIDDEN_CLASS);
+    this._container.querySelector(`.board`).classList.remove(HIDDEN_CLASS);
   }
 
   hide() {
-    this._container.classList.add(HIDDEN_CLASS);
+    this._container.querySelector(`.board`).classList.add(HIDDEN_CLASS);
   }
 }

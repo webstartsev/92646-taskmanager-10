@@ -1,5 +1,5 @@
-import MenuComponent from './components/menu.js';
-import StatisticComponent from "./components/statistic.js";
+import MenuComponent, {MenuItem} from './components/menu.js';
+import StatisticsComponent from "./components/statistic.js";
 import BoardController from './controllers/board.js';
 import FilterController from "./controllers/filter.js";
 import TasksModel from "./models/tasks.js";
@@ -24,9 +24,27 @@ filterController.render();
 const boardController = new BoardController(mainElement, tasksModel);
 boardController.render();
 
-const statisticComponent = new StatisticComponent();
-render(mainControlElement, statisticComponent);
+const statisticsComponent = new StatisticsComponent();
+render(mainElement, statisticsComponent);
 
-menuComponent.setClickNewTaskHandler(() => {
-  boardController.createTask();
+statisticsComponent.hide();
+
+menuComponent.setOnChange((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.NEW_TASK:
+      menuComponent.setActiveMenu(MenuItem.TASKS);
+      statisticsComponent.hide();
+      boardController.show();
+      boardController.createTask();
+      break;
+    case MenuItem.STATISTIC:
+      boardController.hide();
+      statisticsComponent.show();
+      break;
+    case MenuItem.TASKS:
+    default:
+      statisticsComponent.hide();
+      boardController.show();
+      break;
+  }
 });
