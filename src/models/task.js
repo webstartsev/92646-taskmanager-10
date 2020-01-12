@@ -1,4 +1,4 @@
-export default class Taks {
+export default class Task {
   constructor(data) {
     this.id = data[`id`];
     this.description = data[`description`] || ``;
@@ -21,5 +21,17 @@ export default class Taks {
       'is_favorite': this.isFavorite,
       'is_archived': this.isArchive,
     };
+  }
+
+  static parseTask(data) {
+    return new Task(data);
+  }
+
+  static parseTasks(data) {
+    return data.map(Task.parseTask);
+  }
+
+  static clone(data) {
+    return new Task(data.toRAW());
   }
 }
