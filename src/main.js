@@ -3,9 +3,12 @@ import StatisticsComponent from "./components/statistic.js";
 import BoardController from './controllers/board.js';
 import FilterController from "./controllers/filter.js";
 import TasksModel from "./models/tasks.js";
+import {END_POINT, AUTHORIZATION} from "./const.js";
+import API from './api.js';
 
 import {render} from './utils/render.js';
 
+const api = new API(END_POINT, AUTHORIZATION);
 const mainElement = document.querySelector(`.main`);
 const mainControlElement = mainElement.querySelector(`.main__control`);
 const menuComponent = new MenuComponent();
@@ -14,10 +17,7 @@ render(mainControlElement, menuComponent);
 const tasksModel = new TasksModel();
 
 const filterController = new FilterController(mainElement, tasksModel);
-filterController.render();
-
 const boardController = new BoardController(mainElement, tasksModel);
-boardController.render();
 
 const dateTo = new Date();
 const dateFrom = (() => {
@@ -49,3 +49,10 @@ menuComponent.setOnChange((menuItem) => {
       break;
   }
 });
+
+api.getTasks()
+  .then((tasks) => {
+    tasksModel.setTasks(tasks);
+    filterController.render();
+    boardController.render();
+  });
