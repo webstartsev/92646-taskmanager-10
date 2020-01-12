@@ -22,7 +22,7 @@ const API = class {
   }
 
   getTasks() {
-    this._load({url: `tasks`})
+    return this._load({url: `tasks`})
       .then((response) => response.json())
       .then(Task.parseTasks);
   }
