@@ -27,6 +27,21 @@ export const EmptyTask = {
   isArchive: false,
 };
 
+const parseFormData = (formData) => {
+  const date = formData.get(`date`);
+
+  return {
+    description: formData.get(`text`),
+    color: formData.get(`color`),
+    tags: formData.getAll(`hashtag`),
+    dueDate: date ? new Date(date) : null,
+    repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
+      acc[it] = true;
+      return Object.assign({}, acc);
+    }, {})
+  };
+};
+
 export default class TaskController {
   constructor(container, onDataChange, onViewChange) {
     this._container = container;
@@ -98,7 +113,10 @@ export default class TaskController {
 
     this._formTaskComponet.setSubmitHandler((evt) => {
       evt.preventDefault();
-      const data = this._formTaskComponet.getData();
+
+      const formData = this._formTaskComponet.getData();
+      const data = parseFormData(formData);
+
       this._onDataChange(this, task, data);
     });
 
