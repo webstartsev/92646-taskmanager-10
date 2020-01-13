@@ -32,7 +32,14 @@ const API = class {
   }
 
   updateTask(id, task) {
-
+    return this._load({
+      url: `tasks/${id}`,
+      method: Method.PUT,
+      body: JSON.stringify(task.toRAW()),
+      headers: new Headers({'Content-Type': `application/json`})
+    })
+      .then((response) => response.json())
+      .then(Task.parseTask);
   }
 
   deleteTask(id) {
