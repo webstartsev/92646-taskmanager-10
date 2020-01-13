@@ -90,6 +90,10 @@ export default class BoardController {
 
             this._showedTaskControllers = [taskController, ...this._showedTaskControllers];
             this._showingTasksCount = this._showedTaskControllers.length;
+            this._updateTasks(this._countShowTasks);
+          })
+          .catch(() => {
+            taskController.shake();
           });
       }
     } else if (newTask === null) {
@@ -97,12 +101,18 @@ export default class BoardController {
         .then(() => {
           this._tasksModel.removeTask(oldTask.id);
           this._updateTasks(this._countShowTasks);
+        })
+        .catch(() => {
+          taskController.shake();
         });
     } else {
       this._api.updateTask(oldTask.id, newTask)
         .then((taskModel) => {
           this._tasksModel.updateTask(oldTask.id, taskModel);
           this._updateTasks(this._countShowTasks);
+        })
+        .catch(() => {
+          taskController.shake();
         });
     }
   }
