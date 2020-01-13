@@ -17,7 +17,7 @@ render(mainControlElement, menuComponent);
 const tasksModel = new TasksModel();
 
 const filterController = new FilterController(mainElement, tasksModel);
-const boardController = new BoardController(mainElement, tasksModel);
+const boardController = new BoardController(mainElement, tasksModel, api);
 
 const dateTo = new Date();
 const dateFrom = (() => {
