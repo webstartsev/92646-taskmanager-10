@@ -140,12 +140,12 @@ export default class TaskController {
     this._formTaskComponet.setSubmitHandler((evt) => {
       evt.preventDefault();
 
+      const formData = this._formTaskComponet.getData();
+      const data = parseFormData(formData);
+
       this._formTaskComponet.setData({
         saveButtonText: `Saving...`,
       });
-
-      const formData = this._formTaskComponet.getData();
-      const data = parseFormData(formData);
 
       this._onDataChange(this, task, data);
     });
