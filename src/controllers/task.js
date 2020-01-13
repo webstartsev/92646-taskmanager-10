@@ -10,6 +10,8 @@ export const Mode = {
   EDIT: `edit`,
 };
 
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
 export const EmptyTask = {
   description: ``,
   dueDate: null,
@@ -62,6 +64,21 @@ export default class TaskController {
     this._replaceEditToTask = this._replaceEditToTask.bind(this);
     this._replaceTaskToEdit = this._replaceTaskToEdit.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+  }
+
+  shake() {
+    this._taskComponet.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._formTaskComponet.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._taskComponet.getElement().style.animation = ``;
+      this._formTaskComponet.getElement().style.animation = ``;
+
+      this._formTaskComponet.setData({
+        saveButtonText: `Save`,
+        deleteButtonText: `Delete`,
+      });
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _onEscKeyDown(evt) {
