@@ -123,6 +123,10 @@ export default class TaskController {
     this._formTaskComponet.setSubmitHandler((evt) => {
       evt.preventDefault();
 
+      this._formTaskComponet.setData({
+        saveButtonText: `Saving...`,
+      });
+
       const formData = this._formTaskComponet.getData();
       const data = parseFormData(formData);
 
@@ -130,6 +134,10 @@ export default class TaskController {
     });
 
     this._formTaskComponet.setDeleteButtonClickHandler(() => {
+      this._formTaskComponet.setData({
+        deleteButtonText: `Deleting...`,
+      });
+
       this._onDataChange(this, task, null);
     });
 
