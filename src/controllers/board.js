@@ -93,8 +93,11 @@ export default class BoardController {
           });
       }
     } else if (newTask === null) {
-      this._tasksModel.removeTask(oldTask.id);
-      this._updateTasks(this._countShowTasks);
+      this._api.deleteTask(oldTask.id)
+        .then(() => {
+          this._tasksModel.removeTask(oldTask.id);
+          this._updateTasks(this._countShowTasks);
+        });
     } else {
       this._api.updateTask(oldTask.id, newTask)
         .then((taskModel) => {
