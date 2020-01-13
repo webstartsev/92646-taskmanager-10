@@ -27,9 +27,9 @@ const API = class {
       .then(Task.parseTasks);
   }
 
-  createTask(task) {
+  // createTask(task) {
 
-  }
+  // }
 
   updateTask(id, task) {
     return this._load({
@@ -42,9 +42,9 @@ const API = class {
       .then(Task.parseTask);
   }
 
-  deleteTask(id) {
+  // deleteTask(id) {
 
-  }
+  // }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
