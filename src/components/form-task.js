@@ -8,6 +8,11 @@ import '../../node_modules/flatpickr/dist/themes/light.css';
 const MIN_DESCRIPTION_LENGTH = 1;
 const MAX_DESCRIPTION_LENGTH = 140;
 
+const DefaultData = {
+  deleteButtonText: `Default`,
+  saveButtonText: `Save`
+};
+
 const isAllowableDescriptionLength = (description) => {
   const length = description.length;
 
@@ -90,7 +95,7 @@ const isRepeating = (repeatingDays) => {
 
 const createFormTaskEditTemplate = (task, options = {}) => {
   const {description, tags, dueDate, color} = task;
-  const {isDateShowing, isRepeatingTask, activeRepeatingDays} = options;
+  const {isDateShowing, isRepeatingTask, activeRepeatingDays, externalData} = options;
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isBlockSaveButton = (isDateShowing && isRepeatingTask) || (isRepeatingTask && !isRepeating(activeRepeatingDays)) || !isAllowableDescriptionLength(description);
@@ -104,6 +109,9 @@ const createFormTaskEditTemplate = (task, options = {}) => {
   const tagsMarkup = createHashtags(tags);
   const colorsMarkup = createColorsMarkup(Colors, color);
   const repeatingDaysMarkup = createRepeatingDaysMarkup(Days, activeRepeatingDays);
+
+  const deleteButtonText = externalData.deleteButtonText;
+  const saveButtonText = externalData.saveButtonText;
 
   return (
     `<article class="card card--edit card--${color} ${repeatClass} ${deadlineClass}">
@@ -188,8 +196,8 @@ const createFormTaskEditTemplate = (task, options = {}) => {
             </div>
 
             <div class="card__status-btns">
-              <button class="card__save" type="submit" ${isBlockSaveButton ? `disabled` : ``}>save</button>
-              <button class="card__delete" type="button">delete</button>
+              <button class="card__save" type="submit" ${isBlockSaveButton ? `disabled` : ``}>${saveButtonText}</button>
+              <button class="card__delete" type="button">${deleteButtonText}</button>
             </div>
           </div>
         </form>
@@ -205,6 +213,7 @@ export default class FormTask extends AbstarctSmartComponent {
     this._isDateShowing = !!task.dueDate;
     this._isRepeatingTask = Object.values(task.repeatingDays).some(Boolean);
     this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
+    this._externalData = DefaultData;
     this._flatpickr = null;
     this._submitHandler = null;
     this._deleteButtonClickHandler = null;
@@ -218,6 +227,7 @@ export default class FormTask extends AbstarctSmartComponent {
       isDateShowing: this._isDateShowing,
       isRepeatingTask: this._isRepeatingTask,
       activeRepeatingDays: this._activeRepeatingDays,
+      externalData: this._externalData
     });
   }
 
@@ -235,6 +245,11 @@ export default class FormTask extends AbstarctSmartComponent {
         defaultDate: this._task.dueDate,
       });
     }
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerender();
   }
 
   setSubmitHandler(handler) {
