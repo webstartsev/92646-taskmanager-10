@@ -15,21 +15,6 @@ const isAllowableDescriptionLength = (description) => {
     length <= MAX_DESCRIPTION_LENGTH;
 };
 
-const parseFormData = (formData) => {
-  const date = formData.get(`date`);
-
-  return {
-    description: formData.get(`text`),
-    color: formData.get(`color`),
-    tags: formData.getAll(`hashtag`),
-    dueDate: date ? new Date(date) : null,
-    repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
-      acc[it] = true;
-      return Object.assign({}, acc);
-    }, {})
-  };
-};
-
 const createColorsMarkup = (colors, currentColor) => {
   return colors
     .map((color, i) => {
@@ -302,9 +287,7 @@ export default class FormTask extends AbstarctSmartComponent {
 
   getData() {
     const form = this.getElement().querySelector(`.card__form`);
-    const formData = new FormData(form);
-
-    return parseFormData(formData);
+    return new FormData(form);
   }
 
   removeElement() {

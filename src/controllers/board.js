@@ -10,7 +10,7 @@ const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 
 export default class BoardController {
-  constructor(container, tasksModel) {
+  constructor(container, tasksModel, api) {
     this._container = container;
     this._countShowTasks = SHOWING_TASKS_COUNT_ON_START;
     this._showedTaskControllers = [];
@@ -19,6 +19,7 @@ export default class BoardController {
     this._creatingTask = null;
 
     this._tasksModel = tasksModel;
+    this._api = api;
 
     this._boardComponent = new BoardComponent();
     this._loadMoreBtnComponent = new LoadMoreBtnComponent();
@@ -92,9 +93,12 @@ export default class BoardController {
     if (newTask === null) {
       this._tasksModel.removeTask(oldTask.id);
     } else {
-      this._tasksModel.updateTask(oldTask.id, newTask);
+      this._api.updateTask(oldTask.id, newTask)
+        .then((taskModel) => {
+          this._tasksModel.updateTask(oldTask.id, taskModel);
+          this._updateTasks(this._countShowTasks);
+        });
     }
-    this._updateTasks(this._countShowTasks);
   }
 
   _onViewChange() {

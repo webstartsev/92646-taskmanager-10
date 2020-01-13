@@ -59,3 +59,13 @@ export const getTasksByFilter = (tasks, filterType) => {
 
   return tasks;
 };
+
+export const generateFilters = (tasks, activeFilterType) => {
+  return Object.values(FilterType).map((filterType) => {
+    return {
+      name: filterType,
+      count: getTasksByFilter(tasks, filterType).length,
+      isChecked: filterType === activeFilterType,
+    };
+  });
+};
