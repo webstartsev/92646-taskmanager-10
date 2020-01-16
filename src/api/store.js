@@ -1,24 +1,22 @@
 export default class Store {
   constructor(key, storage) {
-    this._storekey = key;
     this._storage = storage;
+    this._storeKey = key;
   }
 
   getAll() {
     try {
-      return JSON.stringify(this._storage.getItem(this._storekey));
+      return JSON.parse(this._storage.getItem(this._storeKey));
     } catch (err) {
       return {};
     }
   }
 
-  dropAll() {}
-
   setItem(key, value) {
     const store = this.getAll();
 
     this._storage.setItem(
-        this._storekey,
+        this._storeKey,
         JSON.stringify(
             Object.assign({}, store, {[key]: value})
         )
@@ -31,7 +29,7 @@ export default class Store {
     delete store[key];
 
     this._storage.setItem(
-        this._storekey,
+        this._storeKey,
         JSON.stringify(
             Object.assign({}, store)
         )
