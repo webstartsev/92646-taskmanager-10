@@ -19,4 +19,8 @@ export default class Provider {
   deleteTask(id) {
     return this._api.deleteTask(id);
   }
+
+  _isOnline() {
+    return window.navigator.onLine;
+  }
 }
