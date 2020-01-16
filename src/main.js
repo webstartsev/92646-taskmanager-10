@@ -3,11 +3,12 @@ import StatisticsComponent from "./components/statistic.js";
 import BoardController from './controllers/board.js';
 import FilterController from "./controllers/filter.js";
 import TasksModel from "./models/tasks.js";
-import {END_POINT, AUTHORIZATION} from "./const.js";
+import {END_POINT, AUTHORIZATION, STORE_NAME} from "./const.js";
 import Api from './api/index.js';
+import Store from './api/store.js';
+import Provider from './api/provider.js';
 
 import {render} from './utils/render.js';
-
 
 window.addEventListener(`load`, () => {
   navigator.serviceWorker.register(`/sw.js`)
@@ -20,6 +21,9 @@ window.addEventListener(`load`, () => {
 });
 
 const api = new Api(END_POINT, AUTHORIZATION);
+const store = new Store(STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
+
 const mainElement = document.querySelector(`.main`);
 const mainControlElement = mainElement.querySelector(`.main__control`);
 const menuComponent = new MenuComponent();
@@ -28,7 +32,7 @@ render(mainControlElement, menuComponent);
 const tasksModel = new TasksModel();
 
 const filterController = new FilterController(mainElement, tasksModel);
-const boardController = new BoardController(mainElement, tasksModel, api);
+const boardController = new BoardController(mainElement, tasksModel, apiWithProvider);
 
 const dateTo = new Date();
 const dateFrom = (() => {
@@ -61,7 +65,7 @@ menuComponent.setOnChange((menuItem) => {
   }
 });
 
-api.getTasks()
+apiWithProvider.getTasks()
   .then((tasks) => {
     tasksModel.setTasks(tasks);
     filterController.render();
