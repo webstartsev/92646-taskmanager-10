@@ -1,8 +1,11 @@
 import he from "he";
+import debounce from 'lodash/debounce';
 import AbstractComponent from './abstract-component.js';
 
 import {MonthNames} from '../const.js';
 import {formatTime} from '../utils/utils.js';
+
+const DEBOUNCE_TIMEOUT = 500;
 
 const createHashtagsMarkup = (hashtags) => {
   return hashtags
@@ -98,10 +101,10 @@ export default class Task extends AbstractComponent {
   }
 
   setFavoriteClickHandler(handler) {
-    this.getElement().querySelector(`.card__btn--favorites`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.card__btn--favorites`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   setArchiveClickHandler(handler) {
-    this.getElement().querySelector(`.card__btn--archive`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.card__btn--archive`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 }
