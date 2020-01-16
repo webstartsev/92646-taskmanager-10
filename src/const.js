@@ -1,6 +1,10 @@
 export const AUTHORIZATION = `Basic eo0w590ik29889a`;
 export const END_POINT = `https://htmlacademy-es-10.appspot.com/task-manager/`;
 
+export const STORE_PREFIX = `taskmanager-localstorage`;
+export const STORE_VER = `v1`;
+export const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+
 export const Color = {
   BLACK: `black`,
   YELLOW: `yellow`,
