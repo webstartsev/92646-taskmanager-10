@@ -10,24 +10,6 @@ import Provider from './api/provider.js';
 
 import {render} from './utils/render.js';
 
-window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`/sw.js`)
-    .then(() => {
-
-    })
-    .catch(() => {
-
-    });
-});
-
-window.addEventListener(`online`, () => {
-  document.title = document.title.replace(` [offline]`, ``);
-});
-
-window.addEventListener(`offline`, () => {
-  document.title += ` [offline]`;
-});
-
 const api = new Api(END_POINT, AUTHORIZATION);
 const store = new Store(STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, store);
@@ -79,3 +61,32 @@ apiWithProvider.getTasks()
     filterController.render();
     boardController.render();
   });
+
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`)
+    .then(() => {
+
+    })
+    .catch(() => {
+
+    });
+});
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+
+  if (!apiWithProvider.getSynchronize()) {
+    apiWithProvider.sync()
+      .then(() => {
+        // Действие, в случае успешной синхронизации
+      })
+      .catch(() => {
+        // Действие, в случае ошибки синхронизации
+      });
+  }
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
+});
