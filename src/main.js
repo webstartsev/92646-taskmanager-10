@@ -8,6 +8,17 @@ import API from './api.js';
 
 import {render} from './utils/render.js';
 
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`)
+    .then(() => {
+
+    })
+    .catch(() => {
+
+    });
+});
+
 const api = new API(END_POINT, AUTHORIZATION);
 const mainElement = document.querySelector(`.main`);
 const mainControlElement = mainElement.querySelector(`.main__control`);
